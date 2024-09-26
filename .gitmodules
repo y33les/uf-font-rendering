@@ -1,0 +1,3 @@
+[submodule "left"]
+	path = left
+	url = https://git.sr.ht/~rabbits/left

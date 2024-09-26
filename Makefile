@@ -20,4 +20,3 @@ process:
 
 clean:
 	rm -f *.tal *.uf2 *.bin *.sym
-	rm -rf left
