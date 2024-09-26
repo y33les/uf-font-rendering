@@ -1,4 +1,4 @@
-SHELL=/bin/env bash
+SHELL=env bash
 
 WD := $(shell pwd)
 UFROM := /boot/home/uxn/uf-8/uf.rom
