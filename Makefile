@@ -1,10 +1,10 @@
-SHELL=/usr/bin/env bash
+SHELL=/bin/env bash
 
 WD := $(shell pwd)
-UFROM := /home/phil/uxn/uf-8/uf.rom
-UXNDIR := /home/phil/build/uxn
+UFROM := /boot/home/uxn/uf-8/uf.rom
+UXNDIR := /bin
 
-all: process
+all: extract process
 
 deps:
 	git submodule update --init --recursive
@@ -14,9 +14,10 @@ extract: deps
 	sed '63,165!d' left/src/assets.tal > cream12.tal
 	$(UXNDIR)/uxnasm cream12.tal cream12.bin
 
-process: extract
+process:
 	-$(UXNDIR)/uxncli $(UFROM) < bin2uf2.f
-	rm *.tal *.bin *.sym
+	rm -f *.tal *.bin *.sym
 
 clean:
-	rm *.tal *.uf2 *.bin *.sym
+	rm -f *.tal *.uf2 *.bin *.sym
+	rm -rf left
