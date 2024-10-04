@@ -4,7 +4,7 @@ WD := $(shell pwd)
 UFROM := /boot/home/uxn/uf-8/uf.rom
 UXNDIR := /bin
 
-# all: run
+all: getcream run
 
 deps:
 	git submodule update --init --recursive
@@ -15,7 +15,7 @@ getcream: deps
 	$(UXNDIR)/uxnasm cream12.tal cream12.bin
 	rm -f *.tal *.sym
 
-run: getcream
+run:
 	-$(UXNDIR)/uxnemu $(UFROM) < text.f
 
 clean:

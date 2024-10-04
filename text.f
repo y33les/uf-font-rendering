@@ -36,7 +36,7 @@ variable posy 1 cells allot \ current y coordinate
 \ get address a of tile y for character at index x
 : get-char-tile-addr ( x y -- a )
     tilewidth *
-    swap charwidth *
+    swap h# 20 - charwidth * \ glyphs start at ASCII 0x20
     cream12 glyphs + + + ;
 \ render one character tile at address a in sprite mode x
 : render-char-tile ( a x -- )
@@ -44,29 +44,47 @@ variable posy 1 cells allot \ current y coordinate
 \ render character c in sprite mode x
 : render-character ( c x -- )
     swap \ x c
-    h# 20 - \ ignore first 32 invisible characters
-    dup 0 < if
+    dup h# 20 < if
       ." ERROR (render-character): Only ASCII characters between 0x20 and 0x7F are supported" bye
     then
-    dup h# 5f > if
+    dup h# 7f > if
       ." ERROR (render-character): Only ASCII characters between 0x20 and 0x7F are supported" bye
     then
     dup get-char-width      \ x c w
-    dup 8 /mod nip 0 do     \ x c w
-      rot rot 2dup          \ w x c x c
-      i get-char-tile-addr  \ w x c x a
+
+    4 0 do \ x c w
+      rot rot 2dup \ w x c x c
+      i get-char-tile-addr \ w x c x a
       swap render-char-tile \ w x c
-      rot                   \ x c w
-      i 2 < if
-        8 inc-y             \ x c w
-      else
-        dup inc-x           \ x c w
+      rot \ x c w
+      i 0 = if
+        8 inc-y
+      then
+      i 1 = if
+        -8 inc-y
+        dup 9 < if
+          dup inc-x
+          update-position
+          drop drop drop quit
+        else
+          8 inc-x
+        then
+      then
+      i 2 = if
+        8 inc-y
+      then
+      i 3 = if
+        dup 8 - inc-x
+        -8 inc-y
       then
       update-position
     loop
-    -8 inc-y ;
+    -8 inc-y                \ x c w
+    drop drop drop          \ <empty>
+    update-position ;
 \ render string
 \ render string with line breaks at set no. of characters
 
-h# 59 h# 41 render-character
+h# 47 h# 44 render-character
+h# 65 h# 44 render-character
 brk
