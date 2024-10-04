@@ -75,24 +75,14 @@ variable posy 1 cells allot \ current y coordinate
     drop drop drop ;
 \ render string at address a with length u in sprite mode x
 : render-string ( a u x -- )
-    .s cr
     swap 0 do          \ a x
-      ." => enter loop " i . cr .s cr cr
-      ." swap dup " cr .s cr cr
       swap dup i + c@  \ x a c
-      ." rot dup " .s cr cr
       rot dup          \ a c x x
-      ." 2swap " .s cr cr
       2swap            \ x x a c
-      ." rot " .s cr cr
       rot              \ x a c x
-      ." render " .s cr cr
       render-character \ x a
-      ." swap " .s cr cr
       swap             \ a x
-      ." next loop " .s cr cr
-    loop ;
-    ." exit loop " .s cr cr
+    loop
     drop drop ;
 \ render string with line breaks at set no. of characters
 
@@ -101,4 +91,6 @@ h# 4d h# 44 render-character
 h# 47 h# 44 render-character
 h# 65 h# 44 render-character
 " Foo bar baz quux" h# 41 render-string
+" Where will Mike make his machines?" h# 41 render-string
+.s
 brk
