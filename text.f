@@ -43,32 +43,25 @@ variable posy 1 cells allot \ current y coordinate
     swap spritedata sprite ;
 \ render character c in sprite mode x
 : render-character ( c x -- )
-    swap \ x c
+    swap                      \ x c
     dup h# 20 < if
       ." ERROR (render-character): Only ASCII characters between 0x20 and 0x7F are supported" bye
     then
     dup h# 7f > if
       ." ERROR (render-character): Only ASCII characters between 0x20 and 0x7F are supported" bye
     then
-    dup get-char-width      \ x c w
-
-    4 0 do \ x c w
-      rot rot 2dup \ w x c x c
-      i get-char-tile-addr \ w x c x a
-      swap render-char-tile \ w x c
-      rot \ x c w
+    dup get-char-width        \ x c w
+    dup 9 < if 2 else 4 then 0 do \ x c w
+      rot rot 2dup            \ w x c x c
+      i get-char-tile-addr    \ w x c x a
+      swap render-char-tile   \ w x c
+      rot                     \ x c w
       i 0 = if
         8 inc-y
       then
       i 1 = if
         -8 inc-y
-        dup 9 < if
-          dup inc-x
-          update-position
-          drop drop drop quit
-        else
-          8 inc-x
-        then
+        dup 9 < if dup else 8 then inc-x
       then
       i 2 = if
         8 inc-y
@@ -79,12 +72,33 @@ variable posy 1 cells allot \ current y coordinate
       then
       update-position
     loop
-    -8 inc-y                \ x c w
-    drop drop drop          \ <empty>
-    update-position ;
-\ render string
+    drop drop drop ;
+\ render string at address a with length u in sprite mode x
+: render-string ( a u x -- )
+    .s cr
+    swap 0 do          \ a x
+      ." => enter loop " i . cr .s cr cr
+      ." swap dup " cr .s cr cr
+      swap dup i + c@  \ x a c
+      ." rot dup " .s cr cr
+      rot dup          \ a c x x
+      ." 2swap " .s cr cr
+      2swap            \ x x a c
+      ." rot " .s cr cr
+      rot              \ x a c x
+      ." render " .s cr cr
+      render-character \ x a
+      ." swap " .s cr cr
+      swap             \ a x
+      ." next loop " .s cr cr
+    loop ;
+    ." exit loop " .s cr cr
+    drop drop ;
 \ render string with line breaks at set no. of characters
 
+h# 57 h# 44 render-character
+h# 4d h# 44 render-character
 h# 47 h# 44 render-character
 h# 65 h# 44 render-character
+" Foo bar baz quux" h# 41 render-string
 brk
