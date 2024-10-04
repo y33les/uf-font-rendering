@@ -10,5 +10,6 @@ An attempt at rendering text using the `cream12` font extracted from 100R's [lef
 
 ## Prerequisites
 
+- Git
 - The [uxn](https://100r.co/site/uxn.html) toolchain
 - [UF](http://www.call-with-current-continuation.org/uf/uf.html), version 8
