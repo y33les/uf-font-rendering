@@ -114,7 +114,7 @@ variable posy 1 cells allot \ current y coordinate
       swap                \ a acc x w
       2swap               \ x w a acc
     loop
-    drop drop drop drop ; \ TODO clean up stack
+    drop drop drop drop ;
 
 \ testing
 \ newline function for test purposes
