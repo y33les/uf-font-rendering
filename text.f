@@ -1,4 +1,4 @@
-\ set system colours
+\ set system colours to classic CGA palette
 h# 0f0f h# 0ff0 h# 0fff colors
 
 \ prepare 'cream12' font
@@ -86,11 +86,20 @@ variable posy 1 cells allot \ current y coordinate
     drop drop ;
 \ render string with line breaks at set no. of characters
 
-h# 57 h# 44 render-character
-h# 4d h# 44 render-character
-h# 47 h# 44 render-character
-h# 65 h# 44 render-character
-" Foo bar baz quux" h# 41 render-string
-" Where will Mike make his machines?" h# 41 render-string
+h# 57 h# 44 render-character \ wide character (W)
+h# 4d h# 44 render-character \ wide character (M)
+h# 47 h# 44 render-character \ asymmetric character (G)
+h# 65 h# 44 render-character \ normal character (e)
+0 set-x
+16 inc-y
+update-position
+" Foo bar baz quux" h# 42 render-string                   \ normal string
+0 set-x
+16 inc-y
+update-position
+" Where will Mike make his machines?" h# 43 render-string \ string with wide characters (W, M, w, m)
+0 set-x
+16 inc-y
+update-position
 .s
 brk
